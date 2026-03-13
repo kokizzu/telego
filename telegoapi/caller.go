@@ -107,7 +107,7 @@ func (h HTTPCaller) Call(ctx context.Context, url string, data *RequestData) (*R
 	}
 	request.Header.Set(ContentTypeHeader, data.ContentType)
 
-	response, err := h.Client.Do(request) //nolint:gosec
+	response, err := h.Client.Do(request)
 	if err != nil {
 		return nil, fmt.Errorf("http do request: %w", err)
 	}

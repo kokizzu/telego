@@ -8432,7 +8432,7 @@ type EncryptedCredentials struct {
 	Hash string `json:"hash"`
 
 	// Secret - Base64-encoded secret, encrypted with the bot's public RSA key, required for data decryption
-	Secret string `json:"secret"` //nolint:gosec
+	Secret string `json:"secret"`
 }
 
 // PassportElementError - This object represents an error in the Telegram Passport element which was
