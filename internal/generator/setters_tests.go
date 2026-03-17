@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"slices"
 	"strings"
 )
 
@@ -41,7 +42,7 @@ import (
 		data.WriteString(fmt.Sprintf("func Test%s_Setters(t *testing.T) {\n", currentStruct))
 
 		pointer := "&"
-		if contains(noPointerStructs, currentStruct) {
+		if slices.Contains(noPointerStructs, currentStruct) {
 			pointer = ""
 		}
 		valueName := firstToLower(string(currentStruct[0]))
