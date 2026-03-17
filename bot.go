@@ -272,7 +272,7 @@ func filesParameters(parameters any) (files map[string]ta.NamedReader, hasFiles 
 // parseParameters parses parameter struct to key value structure, v should be a pointer to struct
 func parseParameters(v any) (map[string]string, error) {
 	valueOfV := reflect.ValueOf(v)
-	if valueOfV.Kind() != reflect.Ptr {
+	if valueOfV.Kind() != reflect.Pointer {
 		return nil, fmt.Errorf("%q not a pointer", valueOfV.Kind())
 	}
 
@@ -341,7 +341,7 @@ func isNil(v any) bool {
 	}
 
 	switch reflect.TypeOf(v).Kind() {
-	case reflect.Interface, reflect.Ptr, reflect.Slice, reflect.Map, reflect.Chan, reflect.Func:
+	case reflect.Interface, reflect.Pointer, reflect.Slice, reflect.Map, reflect.Chan, reflect.Func:
 		return reflect.ValueOf(v).IsNil()
 	default:
 		return false
