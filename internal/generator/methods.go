@@ -426,8 +426,8 @@ func parseReturnType(methodDescription string) string {
 
 func returnTypeToVar(returnType string) string {
 	returnVar := strings.TrimPrefix(returnType, "*")
-	if strings.HasPrefix(returnVar, "[]") {
-		returnVar = strings.TrimPrefix(returnVar, "[]") + "s"
+	if after, ok := strings.CutPrefix(returnVar, "[]"); ok {
+		returnVar = after + "s"
 	}
 	return firstToLower(returnVar)
 }

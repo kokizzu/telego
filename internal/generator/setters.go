@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"regexp"
+	"slices"
 	"strings"
 )
 
@@ -38,7 +39,7 @@ func generateSetters(typesData string, desiredStructs []string) tgSetters {
 	for _, structsGroup := range structsGroups {
 		structType := structsGroup[1]
 		if len(desiredStructs) > 0 {
-			found := contains(desiredStructs, structType)
+			found := slices.Contains(desiredStructs, structType)
 
 			if !found {
 				continue
@@ -76,18 +77,6 @@ func generateSetters(typesData string, desiredStructs []string) tgSetters {
 	return setters
 }
 
-func contains(slice []string, a string) bool {
-	found := false
-	for _, s := range slice {
-		if s == a {
-			found = true
-			break
-		}
-	}
-
-	return found
-}
-
 func writeSetters(file *os.File, setters tgSetters, receiverDefault bool, noPointerStructs []string) {
 	data := strings.Builder{}
 
@@ -110,7 +99,7 @@ func writeSetters(file *os.File, setters tgSetters, receiverDefault bool, noPoin
 			r = firstToLower(string(setter.structType[0]))
 		}
 
-		noPointer := contains(noPointerStructs, setter.structType)
+		noPointer := slices.Contains(noPointerStructs, setter.structType)
 
 		convertToPtr := setter.fieldType == "*bool" || setter.fieldType == "*string" || setter.fieldType == "*int"
 
