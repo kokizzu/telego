@@ -53,6 +53,7 @@ var typeStructsSetters = []string{
 	"MenuButtonWebApp",
 	"KeyboardButtonRequestUsers",
 	"KeyboardButtonRequestChat",
+	"KeyboardButtonRequestManagedBot",
 	"ReplyParameters",
 	"InputPollOption",
 

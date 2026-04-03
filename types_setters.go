@@ -48,6 +48,12 @@ func (r *ReplyParameters) WithChecklistTaskID(checklistTaskID int) *ReplyParamet
 	return r
 }
 
+// WithPollOptionID adds poll option ID parameter
+func (r *ReplyParameters) WithPollOptionID(pollOptionID string) *ReplyParameters {
+	r.PollOptionID = pollOptionID
+	return r
+}
+
 // WithText adds text parameter
 func (i *InputPollOption) WithText(text string) *InputPollOption {
 	i.Text = text
@@ -192,6 +198,12 @@ func (k KeyboardButton) WithRequestChat(requestChat *KeyboardButtonRequestChat) 
 	return k
 }
 
+// WithRequestManagedBot adds request managed bot parameter
+func (k KeyboardButton) WithRequestManagedBot(requestManagedBot *KeyboardButtonRequestManagedBot) KeyboardButton {
+	k.RequestManagedBot = requestManagedBot
+	return k
+}
+
 // WithRequestContact adds request contact parameter
 func (k KeyboardButton) WithRequestContact() KeyboardButton {
 	k.RequestContact = true
@@ -323,6 +335,25 @@ func (k *KeyboardButtonRequestChat) WithRequestUsername(requestUsername bool) *K
 // WithRequestPhoto adds request photo parameter
 func (k *KeyboardButtonRequestChat) WithRequestPhoto(requestPhoto bool) *KeyboardButtonRequestChat {
 	k.RequestPhoto = &requestPhoto
+	return k
+}
+
+// WithRequestID adds request ID parameter
+func (k *KeyboardButtonRequestManagedBot) WithRequestID(requestID int32) *KeyboardButtonRequestManagedBot {
+	k.RequestID = requestID
+	return k
+}
+
+// WithSuggestedName adds suggested name parameter
+func (k *KeyboardButtonRequestManagedBot) WithSuggestedName(suggestedName string) *KeyboardButtonRequestManagedBot {
+	k.SuggestedName = suggestedName
+	return k
+}
+
+// WithSuggestedUsername adds suggested username parameter
+func (k *KeyboardButtonRequestManagedBot) WithSuggestedUsername(suggestedUsername string,
+) *KeyboardButtonRequestManagedBot {
+	k.SuggestedUsername = suggestedUsername
 	return k
 }
 

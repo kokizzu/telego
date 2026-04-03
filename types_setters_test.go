@@ -15,7 +15,8 @@ func TestReplyParameters_Setters(t *testing.T) {
 		WithQuoteParseMode("QuoteParseMode").
 		WithQuoteEntities([]MessageEntity{{Type: "QuoteEntities"}}...).
 		WithQuotePosition(3).
-		WithChecklistTaskID(4)
+		WithChecklistTaskID(4).
+		WithPollOptionID("PollOptionID")
 
 	assert.Equal(t, &ReplyParameters{
 		MessageID:                1,
@@ -26,6 +27,7 @@ func TestReplyParameters_Setters(t *testing.T) {
 		QuoteEntities:            []MessageEntity{{Type: "QuoteEntities"}},
 		QuotePosition:            3,
 		ChecklistTaskID:          4,
+		PollOptionID:             "PollOptionID",
 	}, r)
 }
 
@@ -102,6 +104,7 @@ func TestKeyboardButton_Setters(t *testing.T) {
 		WithStyle("Style").
 		WithRequestUsers(&KeyboardButtonRequestUsers{RequestID: 1}).
 		WithRequestChat(&KeyboardButtonRequestChat{RequestID: 2}).
+		WithRequestManagedBot(&KeyboardButtonRequestManagedBot{RequestID: 3}).
 		WithRequestContact().
 		WithRequestLocation().
 		WithRequestPoll(&KeyboardButtonPollType{Type: "RequestPoll"}).
@@ -113,6 +116,7 @@ func TestKeyboardButton_Setters(t *testing.T) {
 		Style:             "Style",
 		RequestUsers:      &KeyboardButtonRequestUsers{RequestID: 1},
 		RequestChat:       &KeyboardButtonRequestChat{RequestID: 2},
+		RequestManagedBot: &KeyboardButtonRequestManagedBot{RequestID: 3},
 		RequestContact:    true,
 		RequestLocation:   true,
 		RequestPoll:       &KeyboardButtonPollType{Type: "RequestPoll"},
@@ -122,7 +126,7 @@ func TestKeyboardButton_Setters(t *testing.T) {
 
 func TestKeyboardButtonRequestUsers_Setters(t *testing.T) {
 	k := (&KeyboardButtonRequestUsers{}).
-		WithRequestID(3).
+		WithRequestID(4).
 		WithUserIsBot(true).
 		WithUserIsPremium(true).
 		WithMaxQuantity(1).
@@ -131,7 +135,7 @@ func TestKeyboardButtonRequestUsers_Setters(t *testing.T) {
 		WithRequestPhoto(true)
 
 	assert.Equal(t, &KeyboardButtonRequestUsers{
-		RequestID:       3,
+		RequestID:       4,
 		UserIsBot:       ToPtr(true),
 		UserIsPremium:   ToPtr(true),
 		MaxQuantity:     1,
@@ -167,6 +171,19 @@ func TestKeyboardButtonRequestChat_Setters(t *testing.T) {
 		RequestTitle:            ToPtr(true),
 		RequestUsername:         ToPtr(true),
 		RequestPhoto:            ToPtr(true),
+	}, k)
+}
+
+func TestKeyboardButtonRequestManagedBot_Setters(t *testing.T) {
+	k := (&KeyboardButtonRequestManagedBot{}).
+		WithRequestID(1).
+		WithSuggestedName("SuggestedName").
+		WithSuggestedUsername("SuggestedUsername")
+
+	assert.Equal(t, &KeyboardButtonRequestManagedBot{
+		RequestID:         1,
+		SuggestedName:     "SuggestedName",
+		SuggestedUsername: "SuggestedUsername",
 	}, k)
 }
 
