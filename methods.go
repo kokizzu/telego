@@ -1662,13 +1662,26 @@ type SendPollParams struct {
 	// Type - Optional. Poll type, “quiz” or “regular”, defaults to “regular”
 	Type string `json:"type,omitempty"`
 
-	// AllowsMultipleAnswers - Optional. True, if the poll allows multiple answers, ignored for polls in quiz
-	// mode, defaults to False
+	// AllowsMultipleAnswers - Optional. Pass True, if the poll allows multiple answers, defaults to False
 	AllowsMultipleAnswers bool `json:"allows_multiple_answers,omitempty"`
 
-	// CorrectOptionID - Optional. 0-based identifier of the correct answer option, required for polls in quiz
-	// mode
-	CorrectOptionID *int `json:"correct_option_id,omitempty"`
+	// AllowsRevoting - Optional. Pass True, if the poll allows to change chosen answer options, defaults to
+	// False for quizzes and to True for regular polls
+	AllowsRevoting bool `json:"allows_revoting,omitempty"`
+
+	// ShuffleOptions - Optional. Pass True, if the poll options must be shown in random order
+	ShuffleOptions bool `json:"shuffle_options,omitempty"`
+
+	// AllowAddingOptions - Optional. Pass True, if answer options can be added to the poll after creation; not
+	// supported for anonymous polls and quizzes
+	AllowAddingOptions bool `json:"allow_adding_options,omitempty"`
+
+	// HideResultsUntilCloses - Optional. Pass True, if poll results must be shown only after the poll closes
+	HideResultsUntilCloses bool `json:"hide_results_until_closes,omitempty"`
+
+	// CorrectOptionIDs - Optional. A JSON-serialized list of monotonically increasing 0-based identifiers of
+	// the correct answer options, required for polls in quiz mode
+	CorrectOptionIDs []int `json:"correct_option_ids,omitempty"`
 
 	// Explanation - Optional. Text that is shown when a user chooses an incorrect answer or taps on the lamp
 	// icon in a quiz-style poll, 0-200 characters with at most 2 line feeds after entities parsing
@@ -1682,17 +1695,28 @@ type SendPollParams struct {
 	// explanation. It can be specified instead of explanation_parse_mode
 	ExplanationEntities []MessageEntity `json:"explanation_entities,omitempty"`
 
-	// OpenPeriod - Optional. Amount of time in seconds the poll will be active after creation, 5-600. Can't be
-	// used together with close_date.
+	// OpenPeriod - Optional. Amount of time in seconds the poll will be active after creation, 5-2628000. Can't
+	// be used together with close_date.
 	OpenPeriod int `json:"open_period,omitempty"`
 
 	// CloseDate - Optional. Point in time (Unix timestamp) when the poll will be automatically closed. Must be
-	// at least 5 and no more than 600 seconds in the future. Can't be used together with open_period.
+	// at least 5 and no more than 2628000 seconds in the future. Can't be used together with open_period.
 	CloseDate int64 `json:"close_date,omitempty"`
 
 	// IsClosed - Optional. Pass True if the poll needs to be immediately closed. This can be useful for poll
 	// preview.
 	IsClosed bool `json:"is_closed,omitempty"`
+
+	// Description - Optional. Description of the poll to be sent, 0-1024 characters after entities parsing
+	Description string `json:"description,omitempty"`
+
+	// DescriptionParseMode - Optional. Mode for parsing entities in the poll description. See formatting
+	// options (https://core.telegram.org/bots/api#formatting-options) for more details.
+	DescriptionParseMode string `json:"description_parse_mode,omitempty"`
+
+	// DescriptionEntities - Optional. A JSON-serialized list of special entities that appear in the poll
+	// description, which can be specified instead of description_parse_mode
+	DescriptionEntities []MessageEntity `json:"description_entities,omitempty"`
 
 	// DisableNotification - Optional. Sends the message silently
 	// (https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound.
@@ -3214,6 +3238,40 @@ func (b *Bot) GetBusinessConnection(ctx context.Context, params *GetBusinessConn
 	return businessConnection, nil
 }
 
+// GetManagedBotTokenParams - Represents parameters of getManagedBotToken method.
+type GetManagedBotTokenParams struct {
+	// UserID - User identifier of the managed bot whose token will be returned
+	UserID int64 `json:"user_id"`
+}
+
+// GetManagedBotToken - Use this method to get the token of a managed bot. Returns the token as String on
+// success.
+func (b *Bot) GetManagedBotToken(ctx context.Context, params *GetManagedBotTokenParams) (*string, error) {
+	var token *string
+	err := b.performRequest(ctx, "getManagedBotToken", params, &token)
+	if err != nil {
+		return nil, fmt.Errorf("telego: getManagedBotToken: %w", err)
+	}
+	return token, nil
+}
+
+// ReplaceManagedBotTokenParams - Represents parameters of replaceManagedBotToken method.
+type ReplaceManagedBotTokenParams struct {
+	// UserID - User identifier of the managed bot whose token will be replaced
+	UserID int64 `json:"user_id"`
+}
+
+// ReplaceManagedBotToken - Use this method to revoke the current token of a managed bot and generate a new
+// one. Returns the new token as String on success.
+func (b *Bot) ReplaceManagedBotToken(ctx context.Context, params *ReplaceManagedBotTokenParams) (*string, error) {
+	var token *string
+	err := b.performRequest(ctx, "replaceManagedBotToken", params, &token)
+	if err != nil {
+		return nil, fmt.Errorf("telego: replaceManagedBotToken: %w", err)
+	}
+	return token, nil
+}
+
 // SetMyCommandsParams - Represents parameters of setMyCommands method.
 type SetMyCommandsParams struct {
 	// Commands - A JSON-serialized list of bot commands to be set as the list of the bot's commands. At most
@@ -3535,12 +3593,13 @@ type SendGiftParams struct {
 
 	// TextParseMode - Optional. Mode for parsing entities in the text. See formatting options
 	// (https://core.telegram.org/bots/api#formatting-options) for more details. Entities other than “bold”,
-	// “italic”, “underline”, “strikethrough”, “spoiler”, and “custom_emoji” are ignored.
+	// “italic”, “underline”, “strikethrough”, “spoiler”, “custom_emoji”, and “date_time”
+	// are ignored.
 	TextParseMode string `json:"text_parse_mode,omitempty"`
 
 	// TextEntities - Optional. A JSON-serialized list of special entities that appear in the gift text. It can
 	// be specified instead of text_parse_mode. Entities other than “bold”, “italic”, “underline”,
-	// “strikethrough”, “spoiler”, and “custom_emoji” are ignored.
+	// “strikethrough”, “spoiler”, “custom_emoji”, and “date_time” are ignored.
 	TextEntities []MessageEntity `json:"text_entities,omitempty"`
 }
 
@@ -3573,12 +3632,13 @@ type GiftPremiumSubscriptionParams struct {
 
 	// TextParseMode - Optional. Mode for parsing entities in the text. See formatting options
 	// (https://core.telegram.org/bots/api#formatting-options) for more details. Entities other than “bold”,
-	// “italic”, “underline”, “strikethrough”, “spoiler”, and “custom_emoji” are ignored.
+	// “italic”, “underline”, “strikethrough”, “spoiler”, “custom_emoji”, and “date_time”
+	// are ignored.
 	TextParseMode string `json:"text_parse_mode,omitempty"`
 
 	// TextEntities - Optional. A JSON-serialized list of special entities that appear in the gift text. It can
 	// be specified instead of text_parse_mode. Entities other than “bold”, “italic”, “underline”,
-	// “strikethrough”, “spoiler”, and “custom_emoji” are ignored.
+	// “strikethrough”, “spoiler”, “custom_emoji”, and “date_time” are ignored.
 	TextEntities []MessageEntity `json:"text_entities,omitempty"`
 }
 
@@ -4251,6 +4311,81 @@ func (b *Bot) DeleteStory(ctx context.Context, params *DeleteStoryParams) error 
 		return fmt.Errorf("telego: deleteStory: %w", err)
 	}
 	return nil
+}
+
+// AnswerWebAppQueryParams - Represents parameters of answerWebAppQuery method.
+type AnswerWebAppQueryParams struct {
+	// WebAppQueryID - Unique identifier for the query to be answered
+	WebAppQueryID string `json:"web_app_query_id"`
+
+	// Result - A JSON-serialized object describing the message to be sent
+	Result InlineQueryResult `json:"result"`
+}
+
+// AnswerWebAppQuery - Use this method to set the result of an interaction with a Web App
+// (https://core.telegram.org/bots/webapps) and send a corresponding message on behalf of the user to the chat
+// from which the query originated. On success, a SentWebAppMessage
+// (https://core.telegram.org/bots/api#sentwebappmessage) object is returned.
+func (b *Bot) AnswerWebAppQuery(ctx context.Context, params *AnswerWebAppQueryParams) (*SentWebAppMessage, error) {
+	var sentWebAppMessage *SentWebAppMessage
+	err := b.performRequest(ctx, "answerWebAppQuery", params, &sentWebAppMessage)
+	if err != nil {
+		return nil, fmt.Errorf("telego: answerWebAppQuery: %w", err)
+	}
+	return sentWebAppMessage, nil
+}
+
+// SavePreparedInlineMessageParams - Represents parameters of savePreparedInlineMessage method.
+type SavePreparedInlineMessageParams struct {
+	// UserID - Unique identifier of the target user that can use the prepared message
+	UserID int64 `json:"user_id"`
+
+	// Result - A JSON-serialized object describing the message to be sent
+	Result InlineQueryResult `json:"result"`
+
+	// AllowUserChats - Optional. Pass True if the message can be sent to private chats with users
+	AllowUserChats bool `json:"allow_user_chats,omitempty"`
+
+	// AllowBotChats - Optional. Pass True if the message can be sent to private chats with bots
+	AllowBotChats bool `json:"allow_bot_chats,omitempty"`
+
+	// AllowGroupChats - Optional. Pass True if the message can be sent to group and supergroup chats
+	AllowGroupChats bool `json:"allow_group_chats,omitempty"`
+
+	// AllowChannelChats - Optional. Pass True if the message can be sent to channel chats
+	AllowChannelChats bool `json:"allow_channel_chats,omitempty"`
+}
+
+// SavePreparedInlineMessage - Stores a message that can be sent by a user of a Mini App. Returns a
+// PreparedInlineMessage (https://core.telegram.org/bots/api#preparedinlinemessage) object.
+func (b *Bot) SavePreparedInlineMessage(ctx context.Context, params *SavePreparedInlineMessageParams) (*PreparedInlineMessage, error) {
+	var preparedInlineMessage *PreparedInlineMessage
+	err := b.performRequest(ctx, "savePreparedInlineMessage", params, &preparedInlineMessage)
+	if err != nil {
+		return nil, fmt.Errorf("telego: savePreparedInlineMessage: %w", err)
+	}
+	return preparedInlineMessage, nil
+}
+
+// SavePreparedKeyboardButtonParams - Represents parameters of savePreparedKeyboardButton method.
+type SavePreparedKeyboardButtonParams struct {
+	// UserID - Unique identifier of the target user that can use the button
+	UserID int64 `json:"user_id"`
+
+	// Button - A JSON-serialized object describing the button to be saved. The button must be of the type
+	// request_users, request_chat, or request_managed_bot
+	Button KeyboardButton `json:"button"`
+}
+
+// SavePreparedKeyboardButton - Stores a keyboard button that can be used by a user within a Mini App.
+// Returns a PreparedKeyboardButton (https://core.telegram.org/bots/api#preparedkeyboardbutton) object.
+func (b *Bot) SavePreparedKeyboardButton(ctx context.Context, params *SavePreparedKeyboardButtonParams) (*PreparedKeyboardButton, error) {
+	var preparedKeyboardButton *PreparedKeyboardButton
+	err := b.performRequest(ctx, "savePreparedKeyboardButton", params, &preparedKeyboardButton)
+	if err != nil {
+		return nil, fmt.Errorf("telego: savePreparedKeyboardButton: %w", err)
+	}
+	return preparedKeyboardButton, nil
 }
 
 // EditMessageTextParams - Represents parameters of editMessageText method.
@@ -5215,60 +5350,6 @@ func (b *Bot) AnswerInlineQuery(ctx context.Context, params *AnswerInlineQueryPa
 		return fmt.Errorf("telego: answerInlineQuery: %w", err)
 	}
 	return nil
-}
-
-// AnswerWebAppQueryParams - Represents parameters of answerWebAppQuery method.
-type AnswerWebAppQueryParams struct {
-	// WebAppQueryID - Unique identifier for the query to be answered
-	WebAppQueryID string `json:"web_app_query_id"`
-
-	// Result - A JSON-serialized object describing the message to be sent
-	Result InlineQueryResult `json:"result"`
-}
-
-// AnswerWebAppQuery - Use this method to set the result of an interaction with a Web App
-// (https://core.telegram.org/bots/webapps) and send a corresponding message on behalf of the user to the chat
-// from which the query originated. On success, a SentWebAppMessage
-// (https://core.telegram.org/bots/api#sentwebappmessage) object is returned.
-func (b *Bot) AnswerWebAppQuery(ctx context.Context, params *AnswerWebAppQueryParams) (*SentWebAppMessage, error) {
-	var sentWebAppMessage *SentWebAppMessage
-	err := b.performRequest(ctx, "answerWebAppQuery", params, &sentWebAppMessage)
-	if err != nil {
-		return nil, fmt.Errorf("telego: answerWebAppQuery: %w", err)
-	}
-	return sentWebAppMessage, nil
-}
-
-// SavePreparedInlineMessageParams - Represents parameters of savePreparedInlineMessage method.
-type SavePreparedInlineMessageParams struct {
-	// UserID - Unique identifier of the target user that can use the prepared message
-	UserID int64 `json:"user_id"`
-
-	// Result - A JSON-serialized object describing the message to be sent
-	Result InlineQueryResult `json:"result"`
-
-	// AllowUserChats - Optional. Pass True if the message can be sent to private chats with users
-	AllowUserChats bool `json:"allow_user_chats,omitempty"`
-
-	// AllowBotChats - Optional. Pass True if the message can be sent to private chats with bots
-	AllowBotChats bool `json:"allow_bot_chats,omitempty"`
-
-	// AllowGroupChats - Optional. Pass True if the message can be sent to group and supergroup chats
-	AllowGroupChats bool `json:"allow_group_chats,omitempty"`
-
-	// AllowChannelChats - Optional. Pass True if the message can be sent to channel chats
-	AllowChannelChats bool `json:"allow_channel_chats,omitempty"`
-}
-
-// SavePreparedInlineMessage - Stores a message that can be sent by a user of a Mini App. Returns a
-// PreparedInlineMessage (https://core.telegram.org/bots/api#preparedinlinemessage) object.
-func (b *Bot) SavePreparedInlineMessage(ctx context.Context, params *SavePreparedInlineMessageParams) (*PreparedInlineMessage, error) {
-	var preparedInlineMessage *PreparedInlineMessage
-	err := b.performRequest(ctx, "savePreparedInlineMessage", params, &preparedInlineMessage)
-	if err != nil {
-		return nil, fmt.Errorf("telego: savePreparedInlineMessage: %w", err)
-	}
-	return preparedInlineMessage, nil
 }
 
 // SendInvoiceParams - Represents parameters of sendInvoice method.

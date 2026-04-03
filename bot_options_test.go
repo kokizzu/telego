@@ -211,11 +211,11 @@ func TestWithHealthCheck(t *testing.T) {
 		Times(1)
 
 	caller.EXPECT().
-		Call(t.Context(), defaultBotAPIServer+botPathPrefix+token+"/getMe", expectedData).
+		Call(t.Context(), defaultBotAPIServer+botPathPrefix+validToken+"/getMe", expectedData).
 		Return(expectedResp, nil).
 		Times(1)
 
-	bot, err := NewBot(token,
+	bot, err := NewBot(validToken,
 		WithAPICaller(caller),
 		WithRequestConstructor(constructor),
 		WithHealthCheck(t.Context()),

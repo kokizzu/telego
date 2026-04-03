@@ -295,15 +295,7 @@ import (
 
 		data.WriteString(fmt.Sprintf("\nfunc (b *Bot) %s(ctx context.Context%s) %s {\n", m.nameTitle, parametersArg, returnType))
 
-		returnVar := returnTypeToVar(m.returnType)
-		switch m.nameTitle {
-		case "ExportChatInviteLink":
-			returnVar = "inviteLink"
-		case "GetChatMemberCount":
-			returnVar = "chatMemberCount"
-		case "CreateInvoiceLink":
-			returnVar = "invoiceLink"
-		}
+		returnVar := returnTypeToVar(m.returnType, m.nameTitle)
 
 		if hasReturnType {
 			data.WriteString(fmt.Sprintf("\tvar %s %s\n", returnVar, m.returnType))
@@ -424,10 +416,21 @@ func parseReturnType(methodDescription string) string {
 	}
 }
 
-func returnTypeToVar(returnType string) string {
+func returnTypeToVar(returnType, nameTitle string) string {
 	returnVar := strings.TrimPrefix(returnType, "*")
 	if after, ok := strings.CutPrefix(returnVar, "[]"); ok {
 		returnVar = after + "s"
 	}
-	return firstToLower(returnVar)
+	returnVar = firstToLower(returnVar)
+	switch nameTitle {
+	case "ExportChatInviteLink":
+		returnVar = "inviteLink"
+	case "GetChatMemberCount":
+		returnVar = "chatMemberCount"
+	case "CreateInvoiceLink":
+		returnVar = "invoiceLink"
+	case "GetManagedBotToken", "ReplaceManagedBotToken":
+		returnVar = "token"
+	}
+	return returnVar
 }

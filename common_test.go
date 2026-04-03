@@ -46,7 +46,7 @@ func newMockedBot(ctrl *gomock.Controller) mockedBot {
 	}
 
 	//nolint:errcheck
-	bot, _ := NewBot(token,
+	bot, _ := NewBot(validToken,
 		WithAPICaller(mb.MockAPICaller),
 		WithRequestConstructor(mb.MockRequestConstructor),
 		WithDiscardLogger(),

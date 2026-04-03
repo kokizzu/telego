@@ -18,7 +18,7 @@ import (
 )
 
 const (
-	token        = "1234567890:aaaabbbbaaaabbbbaaaabbbbaaaabbbbccc"
+	validToken   = "1234567890:aaaabbbbaaaabbbbaaaabbbbaaaabbbbccc"
 	invalidToken = "invalid-token"
 
 	methodName = "testMethod"
@@ -44,7 +44,7 @@ func Test_validateToken(t *testing.T) {
 		},
 		{
 			name:    "valid_1",
-			token:   token,
+			token:   validToken,
 			isValid: true,
 		},
 		{
@@ -65,14 +65,14 @@ func TestNewBot(t *testing.T) {
 	ctrl := gomock.NewController(t)
 
 	t.Run("success", func(t *testing.T) {
-		bot, err := NewBot(token)
+		bot, err := NewBot(validToken)
 
 		require.NoError(t, err)
 		assert.NotNil(t, bot)
 	})
 
 	t.Run("success_with_options", func(t *testing.T) {
-		bot, err := NewBot(token, func(_ *Bot) error { return nil })
+		bot, err := NewBot(validToken, func(_ *Bot) error { return nil })
 
 		require.NoError(t, err)
 		assert.NotNil(t, bot)
@@ -86,7 +86,7 @@ func TestNewBot(t *testing.T) {
 	})
 
 	t.Run("error_with_options", func(t *testing.T) {
-		bot, err := NewBot(token, func(_ *Bot) error { return errTest })
+		bot, err := NewBot(validToken, func(_ *Bot) error { return errTest })
 
 		require.ErrorIs(t, err, errTest)
 		assert.Nil(t, bot)
@@ -113,11 +113,11 @@ func TestNewBot(t *testing.T) {
 				Times(1)
 
 			caller.EXPECT().
-				Call(t.Context(), defaultBotAPIServer+botPathPrefix+token+"/getMe", expectedData).
+				Call(t.Context(), defaultBotAPIServer+botPathPrefix+validToken+"/getMe", expectedData).
 				Return(expectedResp, nil).
 				Times(1)
 
-			bot, err := NewBot(token,
+			bot, err := NewBot(validToken,
 				WithAPICaller(caller),
 				WithRequestConstructor(constructor),
 				WithHealthCheck(t.Context()),
@@ -139,11 +139,11 @@ func TestNewBot(t *testing.T) {
 				Times(1)
 
 			caller.EXPECT().
-				Call(t.Context(), defaultBotAPIServer+botPathPrefix+token+"/getMe", expectedData).
+				Call(t.Context(), defaultBotAPIServer+botPathPrefix+validToken+"/getMe", expectedData).
 				Return(expectedResp, nil).
 				Times(1)
 
-			bot, err := NewBot(token,
+			bot, err := NewBot(validToken,
 				WithAPICaller(caller),
 				WithRequestConstructor(constructor),
 				WithHealthCheck(t.Context()),
@@ -156,22 +156,22 @@ func TestNewBot(t *testing.T) {
 }
 
 func TestBot_Token(t *testing.T) {
-	bot, err := NewBot(token)
+	bot, err := NewBot(validToken)
 	require.NoError(t, err)
 
-	assert.Equal(t, token, bot.Token())
+	assert.Equal(t, validToken, bot.Token())
 }
 
 func TestBot_SecretToken(t *testing.T) {
-	bot, err := NewBot(token)
+	bot, err := NewBot(validToken)
 	require.NoError(t, err)
 
-	hash := sha256.Sum256([]byte(token))
+	hash := sha256.Sum256([]byte(validToken))
 	assert.Equal(t, hex.EncodeToString(hash[:]), bot.SecretToken())
 }
 
 func TestBot_Logger(t *testing.T) {
-	bot, err := NewBot(token)
+	bot, err := NewBot(validToken)
 	require.NoError(t, err)
 
 	assert.Equal(t, bot.log, bot.Logger())
@@ -179,7 +179,7 @@ func TestBot_Logger(t *testing.T) {
 
 func TestBot_FileDownloadURL(t *testing.T) {
 	t.Run("regular", func(t *testing.T) {
-		bot, err := NewBot(token)
+		bot, err := NewBot(validToken)
 		require.NoError(t, err)
 
 		filepath := "file.txt"
@@ -188,7 +188,7 @@ func TestBot_FileDownloadURL(t *testing.T) {
 	})
 
 	t.Run("test", func(t *testing.T) {
-		bot, err := NewBot(token, WithTestServerPath())
+		bot, err := NewBot(validToken, WithTestServerPath())
 		require.NoError(t, err)
 
 		filepath := "file.txt"

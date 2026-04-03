@@ -1730,9 +1730,33 @@ func (p *SendPollParams) WithAllowsMultipleAnswers() *SendPollParams {
 	return p
 }
 
-// WithCorrectOptionID adds correct option ID parameter
-func (p *SendPollParams) WithCorrectOptionID(correctOptionID int) *SendPollParams {
-	p.CorrectOptionID = &correctOptionID
+// WithAllowsRevoting adds allows revoting parameter
+func (p *SendPollParams) WithAllowsRevoting() *SendPollParams {
+	p.AllowsRevoting = true
+	return p
+}
+
+// WithShuffleOptions adds shuffle options parameter
+func (p *SendPollParams) WithShuffleOptions() *SendPollParams {
+	p.ShuffleOptions = true
+	return p
+}
+
+// WithAllowAddingOptions adds allow adding options parameter
+func (p *SendPollParams) WithAllowAddingOptions() *SendPollParams {
+	p.AllowAddingOptions = true
+	return p
+}
+
+// WithHideResultsUntilCloses adds hide results until closes parameter
+func (p *SendPollParams) WithHideResultsUntilCloses() *SendPollParams {
+	p.HideResultsUntilCloses = true
+	return p
+}
+
+// WithCorrectOptionIDs adds correct option ids parameter
+func (p *SendPollParams) WithCorrectOptionIDs(correctOptionIDs ...int) *SendPollParams {
+	p.CorrectOptionIDs = correctOptionIDs
 	return p
 }
 
@@ -1769,6 +1793,24 @@ func (p *SendPollParams) WithCloseDate(closeDate int64) *SendPollParams {
 // WithIsClosed adds is closed parameter
 func (p *SendPollParams) WithIsClosed() *SendPollParams {
 	p.IsClosed = true
+	return p
+}
+
+// WithDescription adds description parameter
+func (p *SendPollParams) WithDescription(description string) *SendPollParams {
+	p.Description = description
+	return p
+}
+
+// WithDescriptionParseMode adds description parse mode parameter
+func (p *SendPollParams) WithDescriptionParseMode(descriptionParseMode string) *SendPollParams {
+	p.DescriptionParseMode = descriptionParseMode
+	return p
+}
+
+// WithDescriptionEntities adds description entities parameter
+func (p *SendPollParams) WithDescriptionEntities(descriptionEntities ...MessageEntity) *SendPollParams {
+	p.DescriptionEntities = descriptionEntities
 	return p
 }
 
@@ -2822,6 +2864,18 @@ func (p *GetBusinessConnectionParams) WithBusinessConnectionID(businessConnectio
 	return p
 }
 
+// WithUserID adds user ID parameter
+func (p *GetManagedBotTokenParams) WithUserID(userID int64) *GetManagedBotTokenParams {
+	p.UserID = userID
+	return p
+}
+
+// WithUserID adds user ID parameter
+func (p *ReplaceManagedBotTokenParams) WithUserID(userID int64) *ReplaceManagedBotTokenParams {
+	p.UserID = userID
+	return p
+}
+
 // WithCommands adds commands parameter
 func (p *SetMyCommandsParams) WithCommands(commands ...BotCommand) *SetMyCommandsParams {
 	p.Commands = commands
@@ -3615,6 +3669,66 @@ func (p *DeleteStoryParams) WithStoryID(storyID int) *DeleteStoryParams {
 	return p
 }
 
+// WithWebAppQueryID adds web app query ID parameter
+func (p *AnswerWebAppQueryParams) WithWebAppQueryID(webAppQueryID string) *AnswerWebAppQueryParams {
+	p.WebAppQueryID = webAppQueryID
+	return p
+}
+
+// WithResult adds result parameter
+func (p *AnswerWebAppQueryParams) WithResult(result InlineQueryResult) *AnswerWebAppQueryParams {
+	p.Result = result
+	return p
+}
+
+// WithUserID adds user ID parameter
+func (p *SavePreparedInlineMessageParams) WithUserID(userID int64) *SavePreparedInlineMessageParams {
+	p.UserID = userID
+	return p
+}
+
+// WithResult adds result parameter
+func (p *SavePreparedInlineMessageParams) WithResult(result InlineQueryResult) *SavePreparedInlineMessageParams {
+	p.Result = result
+	return p
+}
+
+// WithAllowUserChats adds allow user chats parameter
+func (p *SavePreparedInlineMessageParams) WithAllowUserChats() *SavePreparedInlineMessageParams {
+	p.AllowUserChats = true
+	return p
+}
+
+// WithAllowBotChats adds allow bot chats parameter
+func (p *SavePreparedInlineMessageParams) WithAllowBotChats() *SavePreparedInlineMessageParams {
+	p.AllowBotChats = true
+	return p
+}
+
+// WithAllowGroupChats adds allow group chats parameter
+func (p *SavePreparedInlineMessageParams) WithAllowGroupChats() *SavePreparedInlineMessageParams {
+	p.AllowGroupChats = true
+	return p
+}
+
+// WithAllowChannelChats adds allow channel chats parameter
+func (p *SavePreparedInlineMessageParams) WithAllowChannelChats() *SavePreparedInlineMessageParams {
+	p.AllowChannelChats = true
+	return p
+}
+
+// WithUserID adds user ID parameter
+func (p *SavePreparedKeyboardButtonParams) WithUserID(userID int64) *SavePreparedKeyboardButtonParams {
+	p.UserID = userID
+	return p
+}
+
+// WithButton adds button parameter
+func (p *SavePreparedKeyboardButtonParams) WithButton(button KeyboardButton) *SavePreparedKeyboardButtonParams {
+	p.Button = button
+	return p
+}
+
 // WithBusinessConnectionID adds business connection ID parameter
 func (p *EditMessageTextParams) WithBusinessConnectionID(businessConnectionID string) *EditMessageTextParams {
 	p.BusinessConnectionID = businessConnectionID
@@ -4336,54 +4450,6 @@ func (p *AnswerInlineQueryParams) WithNextOffset(nextOffset string) *AnswerInlin
 // WithButton adds button parameter
 func (p *AnswerInlineQueryParams) WithButton(button *InlineQueryResultsButton) *AnswerInlineQueryParams {
 	p.Button = button
-	return p
-}
-
-// WithWebAppQueryID adds web app query ID parameter
-func (p *AnswerWebAppQueryParams) WithWebAppQueryID(webAppQueryID string) *AnswerWebAppQueryParams {
-	p.WebAppQueryID = webAppQueryID
-	return p
-}
-
-// WithResult adds result parameter
-func (p *AnswerWebAppQueryParams) WithResult(result InlineQueryResult) *AnswerWebAppQueryParams {
-	p.Result = result
-	return p
-}
-
-// WithUserID adds user ID parameter
-func (p *SavePreparedInlineMessageParams) WithUserID(userID int64) *SavePreparedInlineMessageParams {
-	p.UserID = userID
-	return p
-}
-
-// WithResult adds result parameter
-func (p *SavePreparedInlineMessageParams) WithResult(result InlineQueryResult) *SavePreparedInlineMessageParams {
-	p.Result = result
-	return p
-}
-
-// WithAllowUserChats adds allow user chats parameter
-func (p *SavePreparedInlineMessageParams) WithAllowUserChats() *SavePreparedInlineMessageParams {
-	p.AllowUserChats = true
-	return p
-}
-
-// WithAllowBotChats adds allow bot chats parameter
-func (p *SavePreparedInlineMessageParams) WithAllowBotChats() *SavePreparedInlineMessageParams {
-	p.AllowBotChats = true
-	return p
-}
-
-// WithAllowGroupChats adds allow group chats parameter
-func (p *SavePreparedInlineMessageParams) WithAllowGroupChats() *SavePreparedInlineMessageParams {
-	p.AllowGroupChats = true
-	return p
-}
-
-// WithAllowChannelChats adds allow channel chats parameter
-func (p *SavePreparedInlineMessageParams) WithAllowChannelChats() *SavePreparedInlineMessageParams {
-	p.AllowChannelChats = true
 	return p
 }
 

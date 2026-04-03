@@ -1839,9 +1839,9 @@ func TestBot_GetChatMemberCount(t *testing.T) {
 			JSONRequest(gomock.Any()).
 			Return(nil, errTest)
 
-		nt, err := m.Bot.GetChatMemberCount(t.Context(), nil)
+		chatMemberCount, err := m.Bot.GetChatMemberCount(t.Context(), nil)
 		require.Error(t, err)
-		assert.Nil(t, nt)
+		assert.Nil(t, chatMemberCount)
 	})
 }
 
@@ -2381,6 +2381,68 @@ func TestBot_GetBusinessConnection(t *testing.T) {
 		businessConnection, err := m.Bot.GetBusinessConnection(t.Context(), nil)
 		require.Error(t, err)
 		assert.Nil(t, businessConnection)
+	})
+}
+
+func TestBot_GetManagedBotToken(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	m := newMockedBot(ctrl)
+
+	t.Run("success", func(t *testing.T) {
+		m.MockRequestConstructor.EXPECT().
+			JSONRequest(gomock.Any()).
+			Return(data, nil)
+
+		expectedToken := validToken
+		resp := telegoResponse(t, &expectedToken)
+		m.MockAPICaller.EXPECT().
+			Call(gomock.Any(), gomock.Any(), gomock.Any()).
+			Return(resp, nil)
+
+		token, err := m.Bot.GetManagedBotToken(t.Context(), nil)
+		require.NoError(t, err)
+		assert.Equal(t, &expectedToken, token)
+	})
+
+	t.Run("error", func(t *testing.T) {
+		m.MockRequestConstructor.EXPECT().
+			JSONRequest(gomock.Any()).
+			Return(nil, errTest)
+
+		token, err := m.Bot.GetManagedBotToken(t.Context(), nil)
+		require.Error(t, err)
+		assert.Nil(t, token)
+	})
+}
+
+func TestBot_ReplaceManagedBotToken(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	m := newMockedBot(ctrl)
+
+	t.Run("success", func(t *testing.T) {
+		m.MockRequestConstructor.EXPECT().
+			JSONRequest(gomock.Any()).
+			Return(data, nil)
+
+		expectedToken := validToken
+		resp := telegoResponse(t, &expectedToken)
+		m.MockAPICaller.EXPECT().
+			Call(gomock.Any(), gomock.Any(), gomock.Any()).
+			Return(resp, nil)
+
+		token, err := m.Bot.ReplaceManagedBotToken(t.Context(), nil)
+		require.NoError(t, err)
+		assert.Equal(t, &expectedToken, token)
+	})
+
+	t.Run("error", func(t *testing.T) {
+		m.MockRequestConstructor.EXPECT().
+			JSONRequest(gomock.Any()).
+			Return(nil, errTest)
+
+		token, err := m.Bot.ReplaceManagedBotToken(t.Context(), nil)
+		require.Error(t, err)
+		assert.Nil(t, token)
 	})
 }
 
@@ -3599,6 +3661,103 @@ func TestBot_DeleteStory(t *testing.T) {
 	})
 }
 
+func TestBot_AnswerWebAppQuery(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	m := newMockedBot(ctrl)
+
+	t.Run("success", func(t *testing.T) {
+		m.MockRequestConstructor.EXPECT().
+			JSONRequest(gomock.Any()).
+			Return(data, nil)
+
+		expectedSentWebAppMessage := &SentWebAppMessage{
+			InlineMessageID: "InlineMessageID",
+		}
+		resp := telegoResponse(t, expectedSentWebAppMessage)
+		m.MockAPICaller.EXPECT().
+			Call(gomock.Any(), gomock.Any(), gomock.Any()).
+			Return(resp, nil)
+
+		sentWebAppMessage, err := m.Bot.AnswerWebAppQuery(t.Context(), nil)
+		require.NoError(t, err)
+		assert.Equal(t, expectedSentWebAppMessage, sentWebAppMessage)
+	})
+
+	t.Run("error", func(t *testing.T) {
+		m.MockRequestConstructor.EXPECT().
+			JSONRequest(gomock.Any()).
+			Return(nil, errTest)
+
+		sentWebAppMessage, err := m.Bot.AnswerWebAppQuery(t.Context(), nil)
+		require.Error(t, err)
+		assert.Nil(t, sentWebAppMessage)
+	})
+}
+
+func TestBot_SavePreparedInlineMessage(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	m := newMockedBot(ctrl)
+
+	t.Run("success", func(t *testing.T) {
+		m.MockRequestConstructor.EXPECT().
+			JSONRequest(gomock.Any()).
+			Return(data, nil)
+
+		expectedPreparedInlineMessage := &PreparedInlineMessage{
+			ID: "123",
+		}
+		resp := telegoResponse(t, expectedPreparedInlineMessage)
+		m.MockAPICaller.EXPECT().
+			Call(gomock.Any(), gomock.Any(), gomock.Any()).
+			Return(resp, nil)
+
+		preparedInlineMessage, err := m.Bot.SavePreparedInlineMessage(t.Context(), nil)
+		require.NoError(t, err)
+		assert.Equal(t, expectedPreparedInlineMessage, preparedInlineMessage)
+	})
+
+	t.Run("error", func(t *testing.T) {
+		m.MockRequestConstructor.EXPECT().
+			JSONRequest(gomock.Any()).
+			Return(nil, errTest)
+
+		preparedInlineMessage, err := m.Bot.SavePreparedInlineMessage(t.Context(), nil)
+		require.Error(t, err)
+		assert.Nil(t, preparedInlineMessage)
+	})
+}
+
+func TestBot_SavePreparedKeyboardButton(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	m := newMockedBot(ctrl)
+
+	t.Run("success", func(t *testing.T) {
+		m.MockRequestConstructor.EXPECT().
+			JSONRequest(gomock.Any()).
+			Return(data, nil)
+
+		expectedPreparedKeyboardButton := &PreparedKeyboardButton{}
+		resp := telegoResponse(t, expectedPreparedKeyboardButton)
+		m.MockAPICaller.EXPECT().
+			Call(gomock.Any(), gomock.Any(), gomock.Any()).
+			Return(resp, nil)
+
+		preparedKeyboardButton, err := m.Bot.SavePreparedKeyboardButton(t.Context(), nil)
+		require.NoError(t, err)
+		assert.Equal(t, expectedPreparedKeyboardButton, preparedKeyboardButton)
+	})
+
+	t.Run("error", func(t *testing.T) {
+		m.MockRequestConstructor.EXPECT().
+			JSONRequest(gomock.Any()).
+			Return(nil, errTest)
+
+		preparedKeyboardButton, err := m.Bot.SavePreparedKeyboardButton(t.Context(), nil)
+		require.Error(t, err)
+		assert.Nil(t, preparedKeyboardButton)
+	})
+}
+
 func TestBot_EditMessageText(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	m := newMockedBot(ctrl)
@@ -4423,72 +4582,6 @@ func TestBot_AnswerInlineQuery(t *testing.T) {
 
 		err := m.Bot.AnswerInlineQuery(t.Context(), nil)
 		require.Error(t, err)
-	})
-}
-
-func TestBot_AnswerWebAppQuery(t *testing.T) {
-	ctrl := gomock.NewController(t)
-	m := newMockedBot(ctrl)
-
-	t.Run("success", func(t *testing.T) {
-		m.MockRequestConstructor.EXPECT().
-			JSONRequest(gomock.Any()).
-			Return(data, nil)
-
-		expectedSentWebAppMessage := &SentWebAppMessage{
-			InlineMessageID: "InlineMessageID",
-		}
-		resp := telegoResponse(t, expectedSentWebAppMessage)
-		m.MockAPICaller.EXPECT().
-			Call(gomock.Any(), gomock.Any(), gomock.Any()).
-			Return(resp, nil)
-
-		sentWebAppMessage, err := m.Bot.AnswerWebAppQuery(t.Context(), nil)
-		require.NoError(t, err)
-		assert.Equal(t, expectedSentWebAppMessage, sentWebAppMessage)
-	})
-
-	t.Run("error", func(t *testing.T) {
-		m.MockRequestConstructor.EXPECT().
-			JSONRequest(gomock.Any()).
-			Return(nil, errTest)
-
-		sentWebAppMessage, err := m.Bot.AnswerWebAppQuery(t.Context(), nil)
-		require.Error(t, err)
-		assert.Nil(t, sentWebAppMessage)
-	})
-}
-
-func TestBot_SavePreparedInlineMessage(t *testing.T) {
-	ctrl := gomock.NewController(t)
-	m := newMockedBot(ctrl)
-
-	t.Run("success", func(t *testing.T) {
-		m.MockRequestConstructor.EXPECT().
-			JSONRequest(gomock.Any()).
-			Return(data, nil)
-
-		expectedPreparedInlineMessage := &PreparedInlineMessage{
-			ID: "123",
-		}
-		resp := telegoResponse(t, expectedPreparedInlineMessage)
-		m.MockAPICaller.EXPECT().
-			Call(gomock.Any(), gomock.Any(), gomock.Any()).
-			Return(resp, nil)
-
-		preparedInlineMessage, err := m.Bot.SavePreparedInlineMessage(t.Context(), nil)
-		require.NoError(t, err)
-		assert.Equal(t, expectedPreparedInlineMessage, preparedInlineMessage)
-	})
-
-	t.Run("error", func(t *testing.T) {
-		m.MockRequestConstructor.EXPECT().
-			JSONRequest(gomock.Any()).
-			Return(nil, errTest)
-
-		preparedInlineMessage, err := m.Bot.SavePreparedInlineMessage(t.Context(), nil)
-		require.Error(t, err)
-		assert.Nil(t, preparedInlineMessage)
 	})
 }
 

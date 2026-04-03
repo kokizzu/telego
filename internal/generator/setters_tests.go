@@ -175,6 +175,8 @@ func parseSetterType(setter tgSetter, counter *int) string {
 		return "&ChatAdministratorRights{IsAnonymous: true}"
 	case "InlineQueryResult":
 		return fmt.Sprintf("&InlineQueryResultArticle{Type: \"%s\"}", setter.fieldName)
+	case "KeyboardButton":
+		return fmt.Sprintf("KeyboardButton{Text: \"%s\"}", setter.fieldName)
 	case "*KeyboardButtonRequestUsers":
 		*counter++
 		return fmt.Sprintf("&KeyboardButtonRequestUsers{RequestID: %d}", *counter)

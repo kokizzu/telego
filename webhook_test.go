@@ -16,7 +16,7 @@ func TestBot_UpdatesViaWebhook(t *testing.T) {
 	ctrl := gomock.NewController(t)
 
 	t.Run("success", func(t *testing.T) {
-		b, err := NewBot(token, WithDiscardLogger())
+		b, err := NewBot(validToken, WithDiscardLogger())
 		require.NoError(t, err)
 
 		_, err = b.UpdatesViaWebhook(t.Context(), func(handler WebhookHandler) error {
@@ -64,7 +64,7 @@ func TestBot_UpdatesViaWebhook(t *testing.T) {
 	})
 
 	t.Run("end_to_end", func(t *testing.T) {
-		b, err := NewBot(token, WithDiscardLogger())
+		b, err := NewBot(validToken, WithDiscardLogger())
 		require.NoError(t, err)
 
 		pushUpdate := make(chan struct{})

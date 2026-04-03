@@ -36,7 +36,7 @@ import (
 `)
 
 		respVar := "emptyResp"
-		actualVar := returnTypeToVar(m.returnType)
+		actualVar := returnTypeToVar(m.returnType, m.nameTitle)
 		expectedVar := fmt.Sprintf("expected%s", firstToUpper(actualVar))
 		if m.hasReturnValue() {
 			expectedData := strings.Replace(m.returnType, "*", "&", 1) + "{}"
@@ -47,6 +47,9 @@ import (
 			}
 
 			respVar = "resp"
+			if m.returnType == "*string" {
+				expectedVar = "&" + expectedVar
+			}
 			data.WriteString(fmt.Sprintf("\n\t\tresp := telegoResponse(t, %s)", expectedVar))
 		}
 
