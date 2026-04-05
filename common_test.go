@@ -60,7 +60,7 @@ func newMockedBot(ctrl *gomock.Controller) mockedBot {
 type testNamedReader struct{}
 
 func (t testNamedReader) Read(_ []byte) (n int, err error) {
-	panic("unreachable: testNamedReader")
+	panic("unreachable: testNamedReader.Read")
 }
 
 func (t testNamedReader) Name() string {

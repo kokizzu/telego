@@ -15,6 +15,8 @@ import (
 	"github.com/valyala/fasthttp"
 )
 
+var errEmptyData = errors.New("empty data")
+
 func TestWebhookFastHTTP(t *testing.T) {
 	srv := &fasthttp.Server{}
 	handler := WebhookFastHTTP(srv, "/", "secret")
@@ -22,7 +24,7 @@ func TestWebhookFastHTTP(t *testing.T) {
 	err := handler(func(ctx context.Context, data []byte) error {
 		require.NotNil(t, ctx)
 		if len(data) == 0 {
-			return errors.New("empty data")
+			return errEmptyData
 		}
 		return nil
 	})
@@ -75,7 +77,7 @@ func TestWebhookHTTPServer(t *testing.T) {
 	err := handler(func(ctx context.Context, data []byte) error {
 		require.NotNil(t, ctx)
 		if len(data) == 0 {
-			return errors.New("empty data")
+			return errEmptyData
 		}
 		return nil
 	})
@@ -133,7 +135,7 @@ func TestWebhookHTTPServeMux(t *testing.T) {
 	err := handler(func(ctx context.Context, data []byte) error {
 		require.NotNil(t, ctx)
 		if len(data) == 0 {
-			return errors.New("empty data")
+			return errEmptyData
 		}
 		return nil
 	})

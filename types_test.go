@@ -1026,15 +1026,15 @@ func (b badChatMember) MarshalJSON() ([]byte, error) {
 }
 
 func (b badChatMember) MemberStatus() string {
-	panic("unreachable: badChatMember")
+	panic("unreachable: badChatMember.MemberStatus")
 }
 
 func (b badChatMember) MemberUser() User {
-	panic("unreachable: badChatMember")
+	panic("unreachable: badChatMember.MemberUser")
 }
 
 func (b badChatMember) MemberIsMember() bool {
-	panic("unreachable: badChatMember")
+	panic("unreachable: badChatMember.MemberIsMember")
 }
 
 func (b badChatMember) iChatMember() {}

@@ -19,7 +19,7 @@ import (
 type testCallerType struct{}
 
 func (c testCallerType) Call(_ context.Context, _ string, _ *ta.RequestData) (*ta.Response, error) {
-	panic("unreachable: testCallerType")
+	panic("unreachable: testCallerType.Call")
 }
 
 func TestWithAPICaller(t *testing.T) {
@@ -50,13 +50,13 @@ func TestWithHTTPClient(t *testing.T) {
 type testConstructorType struct{}
 
 func (testConstructorType) JSONRequest(_ any) (*ta.RequestData, error) {
-	panic("unreachable: testConstructorType")
+	panic("unreachable: testConstructorType.JSONRequest")
 }
 
 func (testConstructorType) MultipartRequest(
 	_ map[string]string, _ map[string]ta.NamedReader,
 ) (*ta.RequestData, error) {
-	panic("unreachable: testConstructorType")
+	panic("unreachable: testConstructorType.MultipartRequest")
 }
 
 func TestWithRequestConstructor(t *testing.T) {
