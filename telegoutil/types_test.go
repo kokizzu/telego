@@ -13,17 +13,17 @@ import (
 
 const epsilon = 0.00001
 
-type testNamedReade struct{}
+type testNamedReader struct{}
 
-func (t testNamedReade) Read(_ []byte) (n int, err error) {
-	panic("implement me")
+func (t testNamedReader) Read(_ []byte) (n int, err error) {
+	panic("unreachable: testNamedReader")
 }
 
-func (t testNamedReade) Name() string {
+func (t testNamedReader) Name() string {
 	return text1
 }
 
-var nr = testNamedReade{}
+var nr = testNamedReader{}
 
 func TestFile(t *testing.T) {
 	f := File(nr)

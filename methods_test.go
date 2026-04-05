@@ -4947,7 +4947,7 @@ func TestSetWebhookParams_fileParameters(t *testing.T) {
 	}
 
 	assert.Equal(t, map[string]ta.NamedReader{
-		"certificate": testNamedReade{},
+		"certificate": testNamedReader{},
 	}, p.fileParameters())
 }
 
@@ -4957,7 +4957,7 @@ func TestSendPhotoParams_fileParameters(t *testing.T) {
 	}
 
 	assert.Equal(t, map[string]ta.NamedReader{
-		"photo": testNamedReade{},
+		"photo": testNamedReader{},
 	}, p.fileParameters())
 }
 
@@ -4968,8 +4968,8 @@ func TestSendAudioParams_fileParameters(t *testing.T) {
 	}
 
 	assert.Equal(t, map[string]ta.NamedReader{
-		"audio":     testNamedReade{},
-		"thumbnail": testNamedReade{},
+		"audio":     testNamedReader{},
+		"thumbnail": testNamedReader{},
 	}, p.fileParameters())
 }
 
@@ -4980,8 +4980,8 @@ func TestSendDocumentParams_fileParameters(t *testing.T) {
 	}
 
 	assert.Equal(t, map[string]ta.NamedReader{
-		"document":  testNamedReade{},
-		"thumbnail": testNamedReade{},
+		"document":  testNamedReader{},
+		"thumbnail": testNamedReader{},
 	}, p.fileParameters())
 }
 
@@ -4992,8 +4992,8 @@ func TestSendVideoParams_fileParameters(t *testing.T) {
 	}
 
 	assert.Equal(t, map[string]ta.NamedReader{
-		"video":     testNamedReade{},
-		"thumbnail": testNamedReade{},
+		"video":     testNamedReader{},
+		"thumbnail": testNamedReader{},
 	}, p.fileParameters())
 }
 
@@ -5004,8 +5004,8 @@ func TestSendAnimationParams_fileParameters(t *testing.T) {
 	}
 
 	assert.Equal(t, map[string]ta.NamedReader{
-		"animation": testNamedReade{},
-		"thumbnail": testNamedReade{},
+		"animation": testNamedReader{},
+		"thumbnail": testNamedReader{},
 	}, p.fileParameters())
 }
 
@@ -5015,7 +5015,7 @@ func TestSendVoiceParams_fileParameters(t *testing.T) {
 	}
 
 	assert.Equal(t, map[string]ta.NamedReader{
-		"voice": testNamedReade{},
+		"voice": testNamedReader{},
 	}, p.fileParameters())
 }
 
@@ -5026,8 +5026,8 @@ func TestSendVideoNoteParams_fileParameters(t *testing.T) {
 	}
 
 	assert.Equal(t, map[string]ta.NamedReader{
-		"video_note": testNamedReade{},
-		"thumbnail":  testNamedReade{},
+		"video_note": testNamedReader{},
+		"thumbnail":  testNamedReader{},
 	}, p.fileParameters())
 }
 
@@ -5046,7 +5046,7 @@ func TestSendMediaGroupParams_fileParameters(t *testing.T) {
 	}
 
 	assert.Equal(t, map[string]ta.NamedReader{
-		"test": testNamedReade{},
+		"test": testNamedReader{},
 	}, p.fileParameters())
 }
 
@@ -5056,7 +5056,7 @@ func TestSetChatPhotoParams_fileParameters(t *testing.T) {
 	}
 
 	assert.Equal(t, map[string]ta.NamedReader{
-		"photo": testNamedReade{},
+		"photo": testNamedReader{},
 	}, p.fileParameters())
 }
 
@@ -5069,7 +5069,7 @@ func TestEditMessageMediaParams_fileParameters(t *testing.T) {
 	}
 
 	assert.Equal(t, map[string]ta.NamedReader{
-		"test": testNamedReade{},
+		"test": testNamedReader{},
 	}, p.fileParameters())
 }
 
@@ -5079,7 +5079,7 @@ func TestSendStickerParams_fileParameters(t *testing.T) {
 	}
 
 	assert.Equal(t, map[string]ta.NamedReader{
-		"sticker": testNamedReade{},
+		"sticker": testNamedReader{},
 	}, p.fileParameters())
 }
 
@@ -5089,7 +5089,7 @@ func TestUploadStickerFileParams_fileParameters(t *testing.T) {
 	}
 
 	assert.Equal(t, map[string]ta.NamedReader{
-		"sticker": testNamedReade{},
+		"sticker": testNamedReader{},
 	}, p.fileParameters())
 }
 
@@ -5103,7 +5103,7 @@ func TestCreateNewStickerSetParams_fileParameters(t *testing.T) {
 	}
 
 	assert.Equal(t, map[string]ta.NamedReader{
-		"test": testNamedReade{},
+		"test": testNamedReader{},
 	}, p.fileParameters())
 
 	assert.Equal(t, map[string]ta.NamedReader{}, (&CreateNewStickerSetParams{}).fileParameters())
@@ -5115,7 +5115,7 @@ func TestAddStickerToSetParams_fileParameters(t *testing.T) {
 	}
 
 	assert.Equal(t, map[string]ta.NamedReader{
-		"test": testNamedReade{},
+		"test": testNamedReader{},
 	}, p.fileParameters())
 
 	assert.Equal(t, map[string]ta.NamedReader{}, (&AddStickerToSetParams{}).fileParameters())
@@ -5127,7 +5127,7 @@ func TestSetStickerSetThumbnailParams_fileParameters(t *testing.T) {
 	}
 
 	assert.Equal(t, map[string]ta.NamedReader{
-		"thumbnail": testNamedReade{},
+		"thumbnail": testNamedReader{},
 	}, p.fileParameters())
 }
 

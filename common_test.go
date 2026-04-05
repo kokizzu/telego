@@ -57,16 +57,16 @@ func newMockedBot(ctrl *gomock.Controller) mockedBot {
 	return mb
 }
 
-type testNamedReade struct{}
+type testNamedReader struct{}
 
-func (t testNamedReade) Read(_ []byte) (n int, err error) {
-	panic("implement me")
+func (t testNamedReader) Read(_ []byte) (n int, err error) {
+	panic("unreachable: testNamedReader")
 }
 
-func (t testNamedReade) Name() string {
+func (t testNamedReader) Name() string {
 	return "test"
 }
 
 var testInputFile = InputFile{
-	File: testNamedReade{},
+	File: testNamedReader{},
 }

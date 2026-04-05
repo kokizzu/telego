@@ -631,7 +631,7 @@ func TestInputFile_MarshalJSON(t *testing.T) {
 		{
 			name: "success_file_need_attach",
 			inputFile: InputFile{
-				File:       testNamedReade{},
+				File:       testNamedReader{},
 				needAttach: true,
 			},
 			jsonData: `"` + attachFile + `test"`,
@@ -680,7 +680,7 @@ func TestInputMedia_fileParameters(t *testing.T) {
 	}
 
 	assert.Equal(t, map[string]ta.NamedReader{
-		"media": testNamedReade{},
+		"media": testNamedReader{},
 	}, im.fileParameters())
 	assert.True(t, im.Media.needAttach)
 }
@@ -692,8 +692,8 @@ func TestInputMediaVideo_fileParameters(t *testing.T) {
 	}
 
 	assert.Equal(t, map[string]ta.NamedReader{
-		"media":     testNamedReade{},
-		"thumbnail": testNamedReade{},
+		"media":     testNamedReader{},
+		"thumbnail": testNamedReader{},
 	}, im.fileParameters())
 	assert.True(t, im.Media.needAttach)
 }
@@ -705,8 +705,8 @@ func TestInputMediaAnimation_fileParameters(t *testing.T) {
 	}
 
 	assert.Equal(t, map[string]ta.NamedReader{
-		"media":     testNamedReade{},
-		"thumbnail": testNamedReade{},
+		"media":     testNamedReader{},
+		"thumbnail": testNamedReader{},
 	}, im.fileParameters())
 	assert.True(t, im.Media.needAttach)
 }
@@ -718,8 +718,8 @@ func TestInputMediaAudio_fileParameters(t *testing.T) {
 	}
 
 	assert.Equal(t, map[string]ta.NamedReader{
-		"media":     testNamedReade{},
-		"thumbnail": testNamedReade{},
+		"media":     testNamedReader{},
+		"thumbnail": testNamedReader{},
 	}, im.fileParameters())
 	assert.True(t, im.Media.needAttach)
 }
@@ -731,8 +731,8 @@ func TestInputMediaDocument_fileParameters(t *testing.T) {
 	}
 
 	assert.Equal(t, map[string]ta.NamedReader{
-		"media":     testNamedReade{},
-		"thumbnail": testNamedReade{},
+		"media":     testNamedReader{},
+		"thumbnail": testNamedReader{},
 	}, im.fileParameters())
 	assert.True(t, im.Media.needAttach)
 }
@@ -1026,15 +1026,15 @@ func (b badChatMember) MarshalJSON() ([]byte, error) {
 }
 
 func (b badChatMember) MemberStatus() string {
-	panic("implement me")
+	panic("unreachable: badChatMember")
 }
 
 func (b badChatMember) MemberUser() User {
-	panic("implement me")
+	panic("unreachable: badChatMember")
 }
 
 func (b badChatMember) MemberIsMember() bool {
-	panic("implement me")
+	panic("unreachable: badChatMember")
 }
 
 func (b badChatMember) iChatMember() {}
@@ -1086,7 +1086,7 @@ func TestInputFile_String(t *testing.T) {
 		{
 			name: "file",
 			inputFile: InputFile{
-				File: &testNamedReade{},
+				File: &testNamedReader{},
 			},
 			stringValue: "test",
 		},

@@ -356,7 +356,7 @@ type testStruct struct{}
 
 func (ts *testStruct) fileParameters() map[string]ta.NamedReader {
 	return map[string]ta.NamedReader{
-		"test": &testNamedReade{},
+		"test": &testNamedReader{},
 	}
 }
 
@@ -371,7 +371,7 @@ func Test_filesParameters(t *testing.T) {
 			name:       "with_files",
 			parameters: &testStruct{},
 			files: map[string]ta.NamedReader{
-				"test": &testNamedReade{},
+				"test": &testNamedReader{},
 			},
 			hasFiles: true,
 		},
@@ -397,7 +397,7 @@ type paramsWithFile struct {
 
 func (p *paramsWithFile) fileParameters() map[string]ta.NamedReader {
 	return map[string]ta.NamedReader{
-		"test": &testNamedReade{},
+		"test": &testNamedReader{},
 	}
 }
 
@@ -405,7 +405,7 @@ type notStructParamsWithFile string
 
 func (p *notStructParamsWithFile) fileParameters() map[string]ta.NamedReader {
 	return map[string]ta.NamedReader{
-		"test": &testNamedReade{},
+		"test": &testNamedReader{},
 	}
 }
 
@@ -729,9 +729,9 @@ func Test_logRequestWithFiles(t *testing.T) {
 		"foo": "bar",
 	}
 	files := map[string]ta.NamedReader{
-		"file1":                 testNamedReade{},
-		testNamedReade{}.Name(): testNamedReade{},
-		"fileNil":               nil,
+		"file1":                  testNamedReader{},
+		testNamedReader{}.Name(): testNamedReader{},
+		"fileNil":                nil,
 	}
 
 	logRequestWithFiles(debug, parameters, files)
