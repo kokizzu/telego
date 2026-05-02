@@ -13,6 +13,7 @@ linters:
     - funcorder
     - gochecknoglobals
     - godot
+    - gomodguard
     - intrange
     - ireturn
     - nlreturn
@@ -107,12 +108,15 @@ linters:
           - revive
           - gocognit
           - gocyclo
+          - goconst
         path: _test\.go$
       - linters:
           - funlen
+          - goconst
         path: types.go
       - linters:
           - lll
+          - goconst
         path: methods.go
     paths:
       - mock
